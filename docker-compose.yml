@@ -1,7 +1,6 @@
 services:
   todoappdb:
     image: mariadb:11
-    container_name: todoappdb
     environment:
       MARIADB_ROOT_PASSWORD: sekrit
       MARIADB_DATABASE: todo_db
@@ -11,7 +10,7 @@ services:
       - mariadb-data:/var/lib/mysql:Z
       - ./TodoApp/schema.sql:/docker-entrypoint-initdb.d/schema.sql:Z,ro
     ports:
-      - "3306:3306"
+      - "3307:3306"
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s
@@ -21,7 +20,6 @@ services:
   todoapp:
     build:
       context: ./TodoApp
-    container_name: todoapp
     depends_on:
       todoappdb:
         condition: service_healthy
